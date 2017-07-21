@@ -15,6 +15,7 @@ var twoSum = function(nums, target) {
 ```
 
 ### 方法二：倒序循环
+```
 var twoSum = function(nums, target) {
     for (let i=nums.length;i--;) { // 倒序循环减少计算步骤
         for (let j=i;j--;) {
@@ -24,3 +25,4 @@ var twoSum = function(nums, target) {
         }
     }
 };
+```
