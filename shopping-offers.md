@@ -94,32 +94,38 @@ var shoppingOffers = function(price, special, needs) {
 };
 ```
 
-### 方案三：？
+### 方案三：对方案一的优化
+
+- 把对 needs 数组的克隆放到了优惠方案的判断后面
 
 ```javascript
 var shoppingOffers = function (price, special, needs) {
- 	var min = 0, specialLen = special.length, needsLen = needs.length;
-  	for (var i=needsLen;i--;) {
-      	min += needs[i]*price[i]; // 计算直接购买所需费用
-  	}
-  	for (var i=specialLen;i--;) {
-      	var valid = true // 优惠方案是否有效
-        for (var j=needsLen;j--;) {
-          	if (special[i][j] > needs[j]) {
-              	valid = false;
-                break;
-          	}
+ 	var specialLen = special.length, needsLen = needs.length;
+  	return shopping(needs)
+  	function shopping(needs) {
+      	var min = 0;
+        for (var i=needsLen;i--;) {
+          min += needs[i]*price[i]; // 计算直接购买所需费用
         }
-      	if (!valid) continue; // 无效则进行下一个优惠方案的判断
-        var _needs = Array.from(needs),
-          	curPrice = special[i][needsLen];
-        for (var j=needsLen;j--;) {
-          	_needs[j] -= special[i][j];
+        for (var s of special) {
+            var valid = true // 优惠方案是否有效
+            for (var j=needsLen;j--;) {
+                if (s[j] > needs[j]) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue; // 无效则进行下一个优惠方案的判断
+            var _needs = Array.from(needs),
+                curPrice = s[needsLen];
+            for (var j=needsLen;j--;) {
+                _needs[j] -= s[j];
+            }
+            curPrice += shopping(_needs);
+            if (curPrice < min) min = curPrice;
         }
-      	curPrice += shoppingOffers(price, special, _needs);
-        if (curPrice < min) min = curPrice;
+      	return min
   	}
-  	return min
 }
 ```
 
