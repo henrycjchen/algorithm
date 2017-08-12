@@ -12,7 +12,7 @@ Output: "the cat was rat by the bat"
 
 ### 解决方案
 
-#### 一：数组循环（696 ms）
+#### 一：（696 ms）
 
 ```javascript
 var replaceWords = function (dict, sentence) {
@@ -31,7 +31,7 @@ var replaceWords = function (dict, sentence) {
 };
 ```
 
-#### 二：处理标记 + 字符串截取
+#### 二：处理标记 + 字符串截取（278 ms）
 
 ```javascript
 var replaceWords = function (dict, sentence) {
