@@ -1,0 +1,56 @@
+## 方案一：两次遍历
+依次遍历出 P 和 Q 的路径，再对比得出最近公共祖先
+
+```js
+var lowestCommonAncestor = function(root, p, q) {
+    const pathP = findPath(root, p);
+    const pathQ = findPath(root, q);
+
+    for (let i=0; i<pathP.length; i++) {
+        if (!pathQ[i]) return pathQ[i-1];
+        if (pathP[i].val !== pathQ[i].val) return pathP[i-1];
+    }
+
+    return pathP[pathP.length - 1];
+};
+
+function findPath(root, node) {
+    if (!root) return [];
+    const result = [];
+    while (root && root.val !== node.val) {
+        result.push(root);
+        if (root.val > node.val) {
+            root = root.left;
+        } else {
+            root = root.right;
+        }
+    } 
+    result.push(root);
+    return result;
+}
+```
+
+### 复杂度分析
+时间复杂度：O(n)
+空间复杂度：O(n)
+
+## 方案二：一次遍历
+同时判断当时节点与 P Q 的大小，如果都大于 P Q 或都小于 P Q，则继续遍历，否则即为分界点，即最近公共祖先
+```js
+var lowestCommonAncestor = function(root, p, q) {
+    while (true) {
+        if (root.val < p.val && root.val < q.val) {
+            root = root.right;
+        } else if (root.val > p.val && root.val > q.val) {
+            root = root.left;
+        } else {
+            break;
+        }
+        
+    }
+    return root;
+};
+```
+### 复杂度分析
+时间复杂度：O(n)
+空间复杂度：O(1)
